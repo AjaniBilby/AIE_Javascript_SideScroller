@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Asteroids</title>
+	<script>
+		highscore = 0;
+		state = 'Splash'
+	</script>
+</head>
+<body style="margin: 0px; padding: 0px">
+	<canvas id="gameCanvas" width="640" height="480" style="margin: 0px; padding: 0px">
+		This is displayed if your browser does not support HTML 5
+	</canvas>
+
+	<!--Setup Page info for javascript-->
+	<script>
+	var canvas = document.getElementById("gameCanvas");
+	var context = canvas.getContext("2d");
+	</script>
+	<script src="./scripts/index.js" async></script>
+</body>
+</html>
