@@ -87,3 +87,4 @@ require("./scripts/howler.js");
 require("./levels/level1.js");
 require("./scripts/levelManager.js");
 require("./scripts/display.js");
+require("./scripts/objects/player.js");

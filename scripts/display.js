@@ -12,8 +12,6 @@ function run() {
     dt = (now - lastTime) / 1000.0;
     lastTime = now;
 
-    InputHandeler(dt);
-
     if (c_filesLoading > 0){
       //Draw Loading
       context.fillStyle = "rgb(209, 209, 209)"
