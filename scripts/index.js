@@ -82,7 +82,7 @@ function require(script){
   };
 
 
-
+require("./scripts/inputs.js");
 require("./scripts/howler.js");
 require("./levels/level1.js");
 require("./scripts/levelManager.js");

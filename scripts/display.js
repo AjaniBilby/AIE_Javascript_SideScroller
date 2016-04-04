@@ -1,4 +1,7 @@
 var dt = 1.0;
+var lastTime;
+
+require("./scripts/display.js");
 
 console.debug("Running Main Script...");
 
