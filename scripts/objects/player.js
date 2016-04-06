@@ -1,8 +1,7 @@
-var Player = {
-  image: document.createElement("img")
+Player.prototype.initalize = function(){
+  this.image = document.createElement("img");
+  this.image.src = "sprites/hero.png";
 };
-
-Player.image.src = "sprites/hero.png"
 
 Player.prototype.update = function(deltaTime){
   var self = this;
