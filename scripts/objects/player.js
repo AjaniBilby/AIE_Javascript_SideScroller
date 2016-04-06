@@ -1,10 +1,11 @@
-Player.prototype.initalize = function(){
+class_Player = function(){
   this.image = document.createElement("img");
   this.image.src = "sprites/hero.png";
 };
 
-Player.prototype.update = function(deltaTime){
-  var self = this;
+var player = new class_Player();
+
+class_Player.prototype.update = function(deltaTime){
 
   if (typeof(this.rotation) == "undefined"){
     this.rotation = 0;
@@ -16,11 +17,9 @@ Player.prototype.update = function(deltaTime){
   }
 };
 
-Player.prototype.draw = function(deltaTime){
+class_Player.prototype.draw = function(deltaTime){
   var self = this;
-
-
-
+  console.log('player tick');
 };
 
 function PlayerTick(dt){
