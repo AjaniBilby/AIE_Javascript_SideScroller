@@ -1,9 +1,6 @@
 //Create keyboard object
 var Keyboard = function(){
 
-  window.addEventListener('keydown', function(evt){this.onKeyDown(evt); }, false);
-  window.addEventListener('keyup', function(evt){ this.onKeyUp(evt); }, false);
-
   this.keyListeners = new Array();
   this.keys = new Array();
 
@@ -118,3 +115,8 @@ Keyboard.prototype.onKeyUp = function(evt){
 Keyboard.prototype.isKeyDown = function(evt){
   return this.keyskeyCode;
 };
+
+var keyboard = new Keyboard();
+
+window.addEventListener('keydown', function(evt){keyboard.onKeyDown(evt); }, false);
+window.addEventListener('keyup', function(evt){ keyboard.onKeyUp(evt); }, false);

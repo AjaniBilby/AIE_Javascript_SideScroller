@@ -1,5 +1,3 @@
-var keyboard = new Keyboard();
-
 class_Player = function(){
   this.location = [0,0];
   this.rotation = 0;
