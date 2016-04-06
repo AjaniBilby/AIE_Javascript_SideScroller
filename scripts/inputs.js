@@ -118,5 +118,3 @@ Keyboard.prototype.onKeyUp = function(evt){
 Keyboard.prototype.isKeyDown = function(evt){
   return this.keyskeyCode;
 };
-
-var keyboard = new Keyboard();
