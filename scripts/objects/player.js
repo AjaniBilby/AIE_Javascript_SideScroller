@@ -18,7 +18,7 @@ class_Player.prototype.update = function(deltaTime){
     this.rotation += deltaTime;
   }
 
-  console.log(keyboard.isKeyDown(Keyboard.KEY_SPACE))
+  console.log(keyboard.isKeyDown(keyboard.KEY_SPACE))
 };
 
 class_Player.prototype.draw = function(deltaTime){
