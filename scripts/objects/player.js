@@ -1,4 +1,12 @@
+var Player = {
+  image: document.createElement("img")
+};
+
+Player.image.src = "sprites/hero.png"
+
 Player.prototype.update = function(deltaTime){
+  var self = this;
+
   if (typeof(this.rotation) == "undefined"){
     this.rotation = 0;
   }
@@ -7,4 +15,16 @@ Player.prototype.update = function(deltaTime){
   }else{
     this.rotation += deltaTime;
   }
+};
+
+Player.prototype.draw = function(deltaTime){
+  var self = this;
+
+
+
+};
+
+function PlayerTick(dt){
+  player.update(dt);
+  player.draw(dt);
 };

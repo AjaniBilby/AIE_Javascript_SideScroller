@@ -45,6 +45,20 @@ function CreateFile(name, content){
 	return textFile;
 };
 
+function LoadJS(file){
+  //Load File
+  c_filesLoading += 1;
+  var loading = true;
+  var NewScript =document.createElement('script');
+  NewScript.src = file;
+  NewScript.type = 'text/javascript';
+  NewScript.async = "async";
+  NewScript.onload = setTimeout(function() { var loading = false; console.debug("Finnished Loading: " + file); c_filesLoading -= 1; }, 11);
+
+  //Place in HTML document
+  document.getElementsByTagName('head')[0].appendChild(NewScript);
+};
+
 var LoadedFiles = []; //Make LoadedFiles a global variable
 
 function require(script){
@@ -63,8 +77,8 @@ function require(script){
     c_filesLoading += 1;
     var loading = true;
     var NewScript =document.createElement('script');
-  	NewScript.src = script;
-    script.type = 'text/javascript';
+    NewScript.src = script;
+    NewScript.type = 'text/javascript';
     NewScript.async = "async";
     NewScript.onload = setTimeout(function() { var loading = false; console.debug("Finnished Loading: " + script); c_filesLoading -= 1; }, 11);
 
@@ -84,7 +98,6 @@ function require(script){
 
 require("./scripts/inputs.js");
 require("./scripts/howler.js");
-require("./levels/level1.js");
 require("./scripts/levelManager.js");
 require("./scripts/display.js");
 require("./scripts/objects/player.js");
