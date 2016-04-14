@@ -12,6 +12,10 @@ function run() {
     dt = (now - lastTime) / 1000.0;
     lastTime = now;
 
+    //Fill Background
+    context.fillStyle = "rgba(0, 100, 255, 1)";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+
     if (c_filesLoading > 0){
       //Draw Loading
       context.fillStyle = "rgb(209, 209, 209)"
@@ -23,15 +27,15 @@ function run() {
       return;
     };
 
-    for (i=0; i<tickEvents.length; i++){
-      window[tickEvents[i]](dt);
-    }
+   if (state.current == state.game){
+     GameRun();
+   };
 };
 
 function GameRun(){
-  //Fill Background
-  context.fillStyle = "rgba(0, 0, 0, 1)";
-  context.fillRect(0, 0, canvas.width, canvas.height);
+  for (i=0; i<tickEvents.length; i++){
+    window[tickEvents[i]](dt);
+  }
 };
 
 /**On Window Resize**/
