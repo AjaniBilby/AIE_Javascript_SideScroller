@@ -16,7 +16,7 @@ var TILESET_COUNT_Y = 14;
 
 //Physics
 var METER = TILE; // abitrary choice for 1m
-var GRAVITY = METER * 9.8 * 6; // very exaggerated gravity (6x)
+var GRAVITY = METER * 6; // very exaggerated gravity (6x)
 
 
 function LoadLevel(level){
@@ -100,7 +100,7 @@ function cellAtTileCoord(layer, tx, ty){
   }
 };
 
-function titleToPixel(tile){
+function tileToPixel(tile){
   return tile * TILE;
 };
 
