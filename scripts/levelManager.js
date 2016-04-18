@@ -4,7 +4,7 @@ var tileset = document.createElement("img");
 tileset.src = "./sprites/tileset.png";
 
 //Init Level manager
-var LAYER_LIST = [];
+var LAYER_LIST = {};
 var LAYER_COUNT = 3;
 var MAP = {tw:31, th:15};
 var TILE = 70;
@@ -14,6 +14,11 @@ var TILESET_SPACING = 2;
 var TILESET_COUNT_X = 14;
 var TILESET_COUNT_Y = 14;
 
+//Physics
+var METER = TILE; // abitrary choice for 1m
+var GRAVITY = METER * 9.8 * 6; // very exaggerated gravity (6x)
+
+
 function LoadLevel(level){
   var dir = "./levels/" + level + ".js";
   LoadJS(dir);
@@ -21,8 +26,9 @@ function LoadLevel(level){
 
 function GenerateLevel(){
   //Get layers
-  for (var i=0; i<levelData.length; i++){
-    LAYER_LIST[i] = levelData.layers[i].name;
+  for (var i=0; i<levelData.layers.length; i++){
+    LAYER_LIST[levelData.layers[i].name] = i;
+    console.log(levelData.layers[i].name + '=' + LAYER_LIST[levelData.layers[i].name]); //Check is set it
   }
 
   InitalizeMap();
@@ -32,11 +38,6 @@ function GenerateLevel(){
 LoadLevel('level1');
 
 function DrawMap(){
-  //Run colision update first
-  cellAtPixelCoord();
-  cellAtTileCoord();
-  pixelToTile();
-  bound();
 
   //Draw tiles
   for (var layerIdx=0; layerIdx<LAYER_COUNT; layerIdx++){
@@ -95,7 +96,6 @@ function cellAtTileCoord(layer, tx, ty){
   }else if (ty>=MAP.th){
     return 0;
   }else{
-    console.log(layer)
     return cells[layer][ty][tx];
   }
 };
