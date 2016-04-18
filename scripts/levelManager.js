@@ -1,8 +1,10 @@
 //Load the image to use for the level tileset
+var cells = [];
 var tileset = document.createElement("img");
-tileset.src = "./sprites/tileset.png"
+tileset.src = "./sprites/tileset.png";
 
 //Init Level manager
+var LAYER_LIST = [];
 var LAYER_COUNT = 3;
 var MAP = {tw:31, th:15};
 var TILE = 70;
@@ -17,10 +19,26 @@ function LoadLevel(level){
   LoadJS(dir);
 };
 
+function GenerateLevel(){
+  //Get layers
+  for (var i=0; i<levelData.length; i++){
+    LAYER_LIST[i] = levelData.layers[i].name;
+  }
+
+  InitalizeMap();
+};
+
 //Load defult level
 LoadLevel('level1');
 
 function DrawMap(){
+  //Run colision update first
+  cellAtPixelCoord();
+  cellAtTileCoord();
+  pixelToTile();
+  bound();
+
+  //Draw tiles
   for (var layerIdx=0; layerIdx<LAYER_COUNT; layerIdx++){
     var idx = 0;
     for (var y=0; y<levelData.layers[layerIdx].height; y++){
@@ -35,6 +53,68 @@ function DrawMap(){
         idx ++;
       }
     }
+  }
+};
+
+function InitalizeMap(){
+  for (var layerIdx=0; layerIdx < LAYER_COUNT; layerIdx++){ //initalize the collision map
+    cells[layerIdx] = [];
+    var idx = 0;
+    for (var y=0; y<levelData.layers[layerIdx].height; y++){
+      cells[layerIdx][y] = [];
+      for (var x=0; x<levelData.layers[layerIdx].width; x++){
+        if (levelData.layers[layerIdx].data[idx] != 0){
+          //for each tile we find in layer data, we need to create 4 collisions (because our collision squares are 35x35 but the tile in the level are 70x70)
+          cells[layerIdx][y][x] = 1;
+          cells[layerIdx][y-1][x] = 1;
+          cells[layerIdx][y-1][x+1] = 1;
+          cells[layerIdx][y][x+1] = 1;
+        }else if (cells[layerIdx][y][x] != 1){
+          cells[layerIdx][y][x] = 0;
+        }
+        idx++;
+      }
+    }
+  }
+};
+
+function cellAtPixelCoord(layer, x, y){
+  if (x<0 || x>SCREEN_WIDTH || y<0){
+    //Let the player drop of the bottom of the screen (this means death)
+    return;
+  }else if (y>SCREEN_HEIGHT){
+    return;
+  }else{
+    return cellAtTileCoord(layer, pixelToTile(x), pixelToTile(y));
+  }
+}
+
+function cellAtTileCoord(layer, tx, ty){
+  if (tx<0 || tx>=MAP.tw || ty<0){
+    return 1;
+  }else if (ty>=MAP.th){
+    return 0;
+  }else{
+    console.log(layer)
+    return cells[layer][ty][tx];
+  }
+};
+
+function titleToPixel(tile){
+  return tile * TILE;
+};
+
+function pixelToTile(pixel){
+  return Math.floor(pixel/TILE);
+};
+
+function bound(value, min, max){
+  if (value < min){
+    return min;
+  }else if (value > max){
+    return max;
+  }else{
+    return value;
   }
 };
 

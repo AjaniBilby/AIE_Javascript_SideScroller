@@ -2,6 +2,7 @@ var GameStartTime = Date.now();
 var LoadedFiles = []; //Make LoadedFiles a global variable
 var tickEvents = []; //Define list of functions to be called on tick
 var c_filesLoading = 0;
+
 var state = {
   current: 1,
   game: 1
@@ -63,7 +64,6 @@ function LoadJS(file){
   document.getElementsByTagName('head')[0].appendChild(NewScript);
 };
 
-var LoadedFiles = []; //Make LoadedFiles a global variable
 
 function require(script){
   //Sets defualt state
@@ -80,7 +80,7 @@ function require(script){
     //Load File
     c_filesLoading += 1;
     var loading = true;
-    var NewScript =document.createElement('script');
+    var NewScript = document.createElement('script');
     NewScript.src = script;
     NewScript.type = 'text/javascript';
     NewScript.async = "async";

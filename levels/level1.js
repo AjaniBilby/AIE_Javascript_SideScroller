@@ -62,3 +62,5 @@ var levelData = { "height":32,
  "version":1,
  "width":32
 }
+
+GenerateLevel()
