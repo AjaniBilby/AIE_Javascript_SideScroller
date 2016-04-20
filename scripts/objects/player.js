@@ -5,7 +5,7 @@ class_Player = function(){
   this.velocity = new Vector2(0,0);
   //Physics
   this.acceleration = 1;
-  this.drag = 100000;
+  this.drag = 1;
   this.maxVelocity = new Vector2(METER * 10, METER * 15);
   this.jumpForce = METER * 2;
   //Display
@@ -70,8 +70,8 @@ class_Player.prototype.update = function(deltaTime){
     }
   }
 
-  var tempVelX; //define temporary Xvelocity for this tick
-  var tempVelY; //define temporary Yvelocity for this tick
+  var tempVelX = 0; //define temporary Xvelocity for this tick
+  var tempVelY = 0; //define temporary Yvelocity for this tick
 
   //Handle inputs
   if (typeof(this.rotation) == "undefined"){
