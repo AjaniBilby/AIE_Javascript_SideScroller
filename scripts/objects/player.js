@@ -20,6 +20,40 @@ var player = new class_Player();
 
 class_Player.prototype.update = function(deltaTime){
 
+  var tempVelX = 0; //define temporary Xvelocity for this tick
+  var tempVelY = 0; //define temporary Yvelocity for this tick
+
+  //Handle inputs
+  if (typeof(this.rotation) == "undefined"){
+    this.rotation = 0;
+  }
+  if ((keyboard.isKeyDown(keyboard.KEY_SPACE) == true) && !this.falling){
+    tempVelY -= this.jumpForce * this.drag * deltaTime;
+    console.log('JUMP!')
+  }
+  if (keyboard.isKeyDown(keyboard.KEY_D) == true){
+    tempVelX += (this.acceleration * this.drag);
+  }else if (keyboard.isKeyDown(keyboard.KEY_A) == true){
+    tempVelX -= (this.acceleration * this.drag);
+  }
+
+  //Handle Physics
+  /*Gravity*/
+  this.velocity.y += (GRAVITY);
+  /*Apply New Forces*/
+  this.velocity.x += tempVelX;
+  this.velocity.y += tempVelY;
+  /*Drag*/
+  this.velocity.x /= (this.drag);
+  this.velocity.y /= (this.drag);
+  /*Apply Speed Clamp*/
+  //this.velocity.x = clamp(this.velocity.x, -this.maxVelocity.x, this.maxVelocity.x);
+  //this.velocity.y = clamp(this.velocity.y, -this.maxVelocity.y, this.maxVelocity.y);
+  /*Set position from velocity*/
+  this.location.x += (this.velocity.x * dt);
+  this.location.y += (this.velocity.y * dt);
+
+
   //Check collision
     /*Our collision detection logic is greatly simplified by the fact that the
     player is a rectangle and is exactly the same size as a single tile.
@@ -56,52 +90,19 @@ class_Player.prototype.update = function(deltaTime){
       cell = celldown;
       cellright = celldiag;
       ny = 0;
+      }
     }
     if (this.velocity.x > 0){
       if ((cellright && !cell) || (celldiag && !celldown && ny)){
         this.location.x = tileToPixel(tx);
         this.velocity.x = 0;
       }
-    }else if (this.velocity < 0){
+    }else if (this.velocity.x < 0){
       if ((cell && !cellright) || (celldown && !celldiag && ny)){
         this.location.x = tileToPixel(tx + 1);
         this.velocity.x = 0;
       }
     }
-  }
-
-  var tempVelX = 0; //define temporary Xvelocity for this tick
-  var tempVelY = 0; //define temporary Yvelocity for this tick
-
-  //Handle inputs
-  if (typeof(this.rotation) == "undefined"){
-    this.rotation = 0;
-  }
-  if ((keyboard.isKeyDown(keyboard.KEY_SPACE) == true) && !this.falling){
-    tempVelY -= this.jumpForce * this.drag * deltaTime;
-    console.log('JUMP!')
-  }
-  if (keyboard.isKeyDown(keyboard.KEY_D) == true){
-    tempVelX += (this.acceleration * this.drag);
-  }else if (keyboard.isKeyDown(keyboard.KEY_A) == true){
-    tempVelX -= (this.acceleration * this.drag);
-  }
-
-  //Handle Physics
-  /*Gravity*/
-  this.velocity.y += (GRAVITY);
-  /*Apply New Forces*/
-  this.velocity.x += tempVelX;
-  this.velocity.y += tempVelY;
-  /*Drag*/
-  this.velocity.x /= (this.drag);
-  this.velocity.y /= (this.drag);
-  /*Apply Speed Clamp*/
-  //this.velocity.x = clamp(this.velocity.x, -this.maxVelocity.x, this.maxVelocity.x);
-  //this.velocity.y = clamp(this.velocity.y, -this.maxVelocity.y, this.maxVelocity.y);
-  /*Set position from velocity*/
-  this.location.x += (this.velocity.x * dt);
-  this.location.y += (this.velocity.y * dt);
 };
 
 class_Player.prototype.draw = function(deltaTime){
