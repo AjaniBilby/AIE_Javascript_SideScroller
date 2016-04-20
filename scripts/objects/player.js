@@ -5,7 +5,7 @@ class_Player = function(){
   this.velocity = new Vector2(0,0);
   //Physics
   this.acceleration = 5;
-  this.drag = 2;
+  this.drag = 100;
   this.maxVelocity = [METER * 10, METER * 15];
   this.jumpForce = METER * 2;
   //Display
@@ -75,25 +75,27 @@ class_Player.prototype.update = function(deltaTime){
     this.rotation = 0;
   }
   if ((keyboard.isKeyDown(keyboard.KEY_SPACE) == true) && !this.falling){
-    this.velocity.y -= this.jumpForce * this.drag;
+    tempVelY -= this.jumpForce * this.drag * deltaTime;
     console.log('JUMP!')
-  }else{
   }
   if (keyboard.isKeyDown(keyboard.KEY_D) == true){
-    this.velocity.x += (this.acceleration * this.drag);
+    tempVelX += (this.acceleration * this.drag);
   }else if (keyboard.isKeyDown(keyboard.KEY_A) == true){
-    this.velocity.x -= (this.acceleration * this.drag);
+    tempVelX -= (this.acceleration * this.drag);
   }
 
   //Handle Physics
   /*Gravity*/
-  this.velocity.y += GRAVITY * dt;
+  this.velocity.y += GRAVITY;
+  /*Apply New Forces*/
+  this.velocity.x += tempVelX * dt;
+  this.velocity.y += tempVelY * dt;
   /*Drag*/
-  this.velocity.x /= this.drag;
-  this.velocity.y /= this.drag;
+  this.velocity.x /= (this.drag + 1);
+  this.velocity.y /= (this.drag + 1);
   /*Set position from velocity*/
-  this.location.x += this.velocity.x;
-  this.location.y += this.velocity.y;
+  this.location.x = Math.floor(this.location.x + (this.velocity.x * dt));
+  this.location.y = Math.floor(this.location.y + (this.velocity.y * dt));
 };
 
 class_Player.prototype.draw = function(deltaTime){
