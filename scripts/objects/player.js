@@ -4,9 +4,9 @@ class_Player = function(){
   this.rotation = 0;
   this.velocity = new Vector2(0,0);
   //Physics
-  this.acceleration = 5;
-  this.drag = 100;
-  this.maxVelocity = [METER * 10, METER * 15];
+  this.acceleration = 1;
+  this.drag = 100000;
+  this.maxVelocity = new Vector2(METER * 10, METER * 15);
   this.jumpForce = METER * 2;
   //Display
   this.width = 159;
@@ -70,6 +70,9 @@ class_Player.prototype.update = function(deltaTime){
     }
   }
 
+  var tempVelX; //define temporary Xvelocity for this tick
+  var tempVelY; //define temporary Yvelocity for this tick
+
   //Handle inputs
   if (typeof(this.rotation) == "undefined"){
     this.rotation = 0;
@@ -93,6 +96,9 @@ class_Player.prototype.update = function(deltaTime){
   /*Drag*/
   this.velocity.x /= (this.drag + 1);
   this.velocity.y /= (this.drag + 1);
+  /*Apply Speed Clamp*/
+  this.velocity.x = clamp(this.velocity.x, -this.maxVelocity.x, this.maxVelocity.x);
+  this.velocity.y = clamp(this.velocity.y, -this.maxVelocity.y, this.maxVelocity.y);
   /*Set position from velocity*/
   this.location.x = Math.floor(this.location.x + (this.velocity.x * dt));
   this.location.y = Math.floor(this.location.y + (this.velocity.y * dt));

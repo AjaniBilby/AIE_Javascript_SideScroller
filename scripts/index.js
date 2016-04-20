@@ -47,6 +47,17 @@ var state = {
   }
 
 /**Function Library Start**/
+
+  function clamp(value, min, max){
+    if (value < min){
+      return min;
+    }else if (value > max){
+      return max;
+    }else{
+      return value;
+    }
+  };
+
   function GameTime(GameStartTime){
     time = Date.now() - GameStartTime;
       if (time > 60000){
