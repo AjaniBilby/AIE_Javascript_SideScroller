@@ -4,8 +4,8 @@ class_Player = function(){
   this.rotation = 0;
   this.velocity = new Vector2(0,0);
   //Physics
-  this.acceleration = 1;
-  this.drag = 1;
+  this.acceleration = 7 * METER;
+  this.drag = 1.5;
   this.maxVelocity = new Vector2(METER * 10, METER * 15);
   this.jumpForce = METER * 2;
   //Display
@@ -91,17 +91,17 @@ class_Player.prototype.update = function(deltaTime){
   /*Gravity*/
   this.velocity.y += GRAVITY;
   /*Apply New Forces*/
-  this.velocity.x += tempVelX * dt;
-  this.velocity.y += tempVelY * dt;
+  this.velocity.x += tempVelX;
+  this.velocity.y += tempVelY;
   /*Drag*/
-  this.velocity.x /= (this.drag + 1);
-  this.velocity.y /= (this.drag + 1);
+  this.velocity.x /= (this.drag);
+  this.velocity.y /= (this.drag);
   /*Apply Speed Clamp*/
   this.velocity.x = clamp(this.velocity.x, -this.maxVelocity.x, this.maxVelocity.x);
   this.velocity.y = clamp(this.velocity.y, -this.maxVelocity.y, this.maxVelocity.y);
   /*Set position from velocity*/
-  this.location.x = Math.floor(this.location.x + (this.velocity.x * dt));
-  this.location.y = Math.floor(this.location.y + (this.velocity.y * dt));
+  this.location.x += (this.velocity.x * dt);
+  this.location.y += (this.velocity.y * dt);
 };
 
 class_Player.prototype.draw = function(deltaTime){
