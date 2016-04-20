@@ -7,7 +7,7 @@ class_Player = function(){
   this.acceleration = 7 * METER;
   this.drag = 1.5;
   this.maxVelocity = new Vector2(METER * 10, METER * 15);
-  this.jumpForce = GRAVITY * METER * 15;
+  this.jumpForce = GRAVITY * METER * 30;
   //Display
   this.width = 159;
   this.height = 163;
@@ -89,7 +89,7 @@ class_Player.prototype.update = function(deltaTime){
 
   //Handle Physics
   /*Gravity*/
-  this.velocity.y += GRAVITY;
+  this.velocity.y += (GRAVITY);
   /*Apply New Forces*/
   this.velocity.x += tempVelX;
   this.velocity.y += tempVelY;
