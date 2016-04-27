@@ -1,4 +1,26 @@
+var LEFT = 0;
+var RIGHT = 1;
+var ANIM_IDLE_LEFT = 0;
+var ANIM_JUMP_LEFT = 1;
+var ANIM_WALK_LEFT = 2;
+var ANIM_IDLE_RIGHT = 3;
+var ANIM_JUMP_RIGHT = 4;
+var ANIM_WALK_RIGHT = 5;
+var ANIM_MAX = 6;
+
 class_Player = function(){
+  /**Display**/
+  this.sprite = new Sprite("./sprites/ChuckNorrisAnim.png");
+  this.sprite.buildAnimation(12, 8, 165, 126, 0.05,[0, 1, 2, 3, 4, 5, 6, 7]);
+  this.sprite.buildAnimation(12, 8, 165, 126, 0.05,[8, 9, 10, 11, 12]);
+  this.sprite.buildAnimation(12, 8, 165, 126, 0.05,[13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26]);
+  this.sprite.buildAnimation(12, 8, 165, 126, 0.05,[52, 53, 54, 55, 56, 57, 58, 59]);
+  this.sprite.buildAnimation(12, 8, 165, 126, 0.05,[60, 61, 62, 63, 64]);
+  this.sprite.buildAnimation(12, 8, 165, 126, 0.05,[65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78]);
+  for(var i=0; i<ANIM_MAX; i++){
+    this.sprite.setAnimationOffset(i, -55, -87);
+  }
+
   //Dimentions
   this.location = new Vector2( 9*TILE, 0*TILE );
   this.rotation = 0;
@@ -12,8 +34,6 @@ class_Player = function(){
   this.width = 159;
   this.height = 163;
   this.offset = new Vector2(-55,-87);
-  this.image = document.createElement("img");
-  this.image.src = "sprites/hero.png";
 };
 
 var player = new class_Player();
@@ -73,6 +93,7 @@ class_Player.prototype.update = function(deltaTime){
 
   this.falling = true;
 
+  //Vertical Collision
   if (this.velocity.y > 0){
     if ((celldown && !cell) || (celldiag && !cellright && nx)){
       //clamp the y position to avoid falling into platform below
@@ -92,6 +113,7 @@ class_Player.prototype.update = function(deltaTime){
       ny = 0;
       }
     }
+    //Horizontal Collision
     if (this.velocity.x > 0){
       if ((cellright && !cell) || (celldiag && !celldown && ny)){
         this.location.x = tileToPixel(tx);
@@ -106,11 +128,7 @@ class_Player.prototype.update = function(deltaTime){
 };
 
 class_Player.prototype.draw = function(deltaTime){
-  context.save();
-    context.translate(this.location.x, this.location.y);
-    context.rotate(this.rotation);
-    context.drawImage(this.image, -this.image.width/2, -this.image.height/2);
-  context.restore();
+    this.sprite.draw(context, (this.location.x), (this.location.y));
 };
 
 function PlayerTick(dt){
