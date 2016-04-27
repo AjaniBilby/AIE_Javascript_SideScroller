@@ -30,10 +30,6 @@ class_Player = function(){
   this.drag = 1.5;
   this.maxVelocity = new Vector2(METER * 10, METER * 15);
   this.jumpForce = GRAVITY * METER * 30;
-  //Display
-  this.width = 159;
-  this.height = 163;
-  this.offset = new Vector2(-55,-87);
 };
 
 var player = new class_Player();
@@ -74,14 +70,15 @@ class_Player.prototype.update = function(deltaTime){
   this.location.y += (this.velocity.y * dt);
 
 
-  //Check collision
-    /*Our collision detection logic is greatly simplified by the fact that the
-    player is a rectangle and is exactly the same size as a single tile.
-    So we know that the player can only ever occupy 1, 2 or 4 cells.
-    This means we can short-circuit and avoid building a general purpose
-    collision detection
-    engine by simply looking at the 1 to 4 cells that the player occupies:
-    the player occupies:*/
+  // we’ll insert code here later
+  // collision detection
+  // Our collision detection logic is greatly simplified by the fact that the
+  // player is a rectangle and is exactly the same size as a single tile.
+   // So we know that the player can only ever occupy 1, 2 or 4 cells.
+
+  // This means we can short-circuit and avoid building a general purpose
+  // collision detection engine by simply looking at the 1 to 4 cells that
+  // the player occupies:
   var tx = pixelToTile(this.location.x);
   var ty = pixelToTile(this.location.y);
   var nx = (this.location.x)%TILE; // true if player overlaps right
@@ -89,7 +86,7 @@ class_Player.prototype.update = function(deltaTime){
   var cell = cellAtTileCoord(LAYER_LIST.Platform, tx, ty);
   var cellright = cellAtTileCoord(LAYER_LIST.Platform, tx + 1, ty);
   var celldown = cellAtTileCoord(LAYER_LIST.Platform, tx, ty + 1);
-  var celldiag = cellAtTileCoord(LAYER_LIST.Platform, tx + 1, ty + 1);
+  var celldiag = cellAtTileCoord(LAYER_LIST.Platform, tx + 1, ty + 1);
 
   this.falling = true;
 
