@@ -15,6 +15,11 @@ var state = {
     this.y = nY;
   };
 
+  Vector2.prototype.Set = function (ix, iy){
+    this.x = ix;
+    this.y = iy;
+  };
+
   Vector2.prototype.Magnitude = function (){
     var mag = this.x*this.x + this.y*this.y
     mag = Math.sqrt(mag);
@@ -148,8 +153,9 @@ var state = {
     };
 /**End Function Library**/
 
-require("./scripts/inputs.js");
+require("./scripts/sprite.js");
 require("./scripts/howler.js");
+require("./scripts/inputs.js");
 require("./scripts/levelManager.js");
 require("./scripts/display.js");
 require("./scripts/objects/player.js");
