@@ -128,7 +128,7 @@ class_Player.prototype.update = function(deltaTime){
 };
 
 class_Player.prototype.draw = function(deltaTime){
-    this.Sprite.draw(context, (this.location.x - this.Sprite.image.width/2), (this.location.y - this.Sprite.image.height/2));
+    this.sprite.draw(context, (this.location.x - this.sprite.image.width/2), (this.location.y - this.sprite.image.height/2));
 };
 
 function PlayerTick(dt){
