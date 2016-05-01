@@ -1,11 +1,11 @@
 var LEFT = 0;
 var RIGHT = 1;
-var ANIM_IDLE_LEFT = 0;
-var ANIM_JUMP_LEFT = 1;
-var ANIM_WALK_LEFT = 2;
-var ANIM_IDLE_RIGHT = 3;
-var ANIM_JUMP_RIGHT = 4;
-var ANIM_WALK_RIGHT = 5;
+var ANIM_IDLE_RIGHT = 0;
+var ANIM_JUMP_RIGHT = 1;
+var ANIM_WALK_RIGHT = 2;
+var ANIM_IDLE_LEFT = 3;
+var ANIM_JUMP_LEFT = 4;
+var ANIM_WALK_LEFT = 5;
 var ANIM_MAX = 6;
 
 class_Player = function(){
@@ -25,16 +25,22 @@ class_Player = function(){
   this.location = new Vector2( 9*TILE, 0*TILE );
   this.rotation = 0;
   this.velocity = new Vector2(0,0);
+  this.size = new Vector2(159, 163);
+  this.direction = LEFT;
   //Physics
-  this.acceleration = 7 * METER;
+  this.acceleration = 4 * METER;
   this.drag = 1.5;
   this.maxVelocity = new Vector2(METER * 10, METER * 15);
-  this.jumpForce = GRAVITY * METER * 30;
+  this.jumpForce = GRAVITY * METER * 6;
+  this.lastJump = Date.now();
+  this.maxJumpHold = 100;
 };
 
 var player = new class_Player();
 
 class_Player.prototype.update = function(deltaTime){
+
+  this.sprite.update(deltaTime);
 
   var tempVelX = 0; //define temporary Xvelocity for this tick
   var tempVelY = 0; //define temporary Yvelocity for this tick
@@ -43,14 +49,49 @@ class_Player.prototype.update = function(deltaTime){
   if (typeof(this.rotation) == "undefined"){
     this.rotation = 0;
   }
-  if ((keyboard.isKeyDown(keyboard.KEY_SPACE) == true) && !this.falling){
-    tempVelY -= this.jumpForce * this.drag * deltaTime;
-    console.log('JUMP!')
+  if ((keyboard.isKeyDown(keyboard.KEY_SPACE) == true)){
+    if (!this.falling){
+      tempVelY -= this.jumpForce * this.drag * deltaTime;
+      this.lastJump = Date.now(); //Reset jump time
+      if (this.direction == LEFT){
+        if (this.sprite.currentAnimation != ANIM_JUMP_LEFT){
+          this.sprite.setAnimation(ANIM_JUMP_LEFT)
+        }
+      }else{
+        if (this.sprite.currentAnimation != ANIM_JUMP_RIGHT){
+          this.sprite.setAnimation(ANIM_JUMP_RIGHT)
+        }
+      }
+    }else if ((Date.now() - this.lastJump) <= this.maxJumpHold){
+      tempVelY -= (this.jumpForce * this.drag * deltaTime) /5;
+    }
   }
+
+
   if (keyboard.isKeyDown(keyboard.KEY_D) == true){
     tempVelX += (this.acceleration * this.drag);
+    this.direction = RIGHT;
+    if (this.sprite.currentAnimation != ANIM_WALK_LEFT){
+      this.sprite.setAnimation(ANIM_WALK_LEFT)
+    }
   }else if (keyboard.isKeyDown(keyboard.KEY_A) == true){
     tempVelX -= (this.acceleration * this.drag);
+    this.direction = LEFT;
+    if (this.sprite.currentAnimation != ANIM_WALK_RIGHT){
+      this.sprite.setAnimation(ANIM_WALK_RIGHT)
+    }
+  }else{
+    if (this.jumping == false && this.falling == false){
+      if (this.direction == LEFT){
+        if (this.sprite.currentAnimation != ANIM_IDLE_RIGHT){
+          this.sprite.setAnimation(ANIM_IDLE_RIGHT);
+        }
+      }else{
+        if (this.sprite.currentAnimation != ANIM_IDLE_LEFT){
+          this.sprite.setAnimation(ANIM_IDLE_LEFT);
+        }
+      }
+    }
   }
 
   //Handle Physics
@@ -125,7 +166,7 @@ class_Player.prototype.update = function(deltaTime){
 };
 
 class_Player.prototype.draw = function(deltaTime){
-    this.sprite.draw(context, (this.location.x - this.sprite.image.width/2), (this.location.y - this.sprite.image.height/2));
+    this.sprite.draw(context, this.location.x, this.location.y);
 };
 
 function PlayerTick(dt){
