@@ -34,6 +34,9 @@ class_Player = function(){
   this.jumpForce = GRAVITY * METER * 6;
   this.lastJump = Date.now();
   this.maxJumpHold = 100;
+  //Attributes
+  this.ammo = 999;
+  this.maxAmmo = 999;
 };
 
 var player = new class_Player();
