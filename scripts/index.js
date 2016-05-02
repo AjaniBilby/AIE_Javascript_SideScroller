@@ -158,4 +158,5 @@ require("./scripts/howler.js");
 require("./scripts/inputs.js");
 require("./scripts/levelManager.js");
 require("./scripts/display.js");
+require("./scripts/objects/hud.js");
 require("./scripts/objects/player.js");
