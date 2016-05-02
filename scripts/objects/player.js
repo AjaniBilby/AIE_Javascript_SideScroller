@@ -18,7 +18,7 @@ class_Player = function(){
   this.sprite.buildAnimation(12, 8, 165, 126, 0.05,[60, 61, 62, 63, 64]);
   this.sprite.buildAnimation(12, 8, 165, 126, 0.05,[65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78]);
   for(var i=0; i<ANIM_MAX; i++){
-    this.sprite.setAnimationOffset(i, -55, -87);
+    this.sprite.setAnimationOffset(i, -55, -50); //i, -55, -87
   }
 
   //Dimentions
