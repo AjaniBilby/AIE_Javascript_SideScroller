@@ -35,6 +35,8 @@ class_Player = function(){
   this.lastJump = Date.now();
   this.maxJumpHold = 100;
   //Attributes
+  this.health = 100;
+  this.maxHealth = 100;
   this.ammo = 999;
   this.maxAmmo = 999;
 };
@@ -171,6 +173,7 @@ class_Player.prototype.update = function(deltaTime){
 class_Player.prototype.draw = function(deltaTime){
   HUD_Update_Layer0();
   this.sprite.draw(context, this.location.x, this.location.y);
+  HUD_Update_Layer1();
 };
 
 function PlayerTick(dt){
