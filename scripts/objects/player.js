@@ -31,9 +31,12 @@ class_Player = function(){
   this.acceleration = 4 * METER;
   this.drag = 1.5;
   this.maxVelocity = new Vector2(METER * 10, METER * 15);
-  this.jumpForce = GRAVITY * METER * 6;
+  this.jumpForce = GRAVITY * METER * 4;
   this.lastJump = Date.now();
-  this.maxJumpHold = 100;
+  this.maxJumpHold = 200;
+  this.jumpCoolDown = 150;
+  this.landTime = Date.now();
+  this.isOnGround = false;
   //Attributes
   this.health = 100;
   this.maxHealth = 100;
@@ -50,12 +53,25 @@ class_Player.prototype.update = function(deltaTime){
   var tempVelX = 0; //define temporary Xvelocity for this tick
   var tempVelY = 0; //define temporary Yvelocity for this tick
 
-  //Handle inputs
+  /**Handle air and jump timers**/
+  if (this.falling == false){
+    if (this.isOnGround == false){
+      console.log("Land")
+      this.isOnGround = true;
+      this.landTime = Date.now();
+    }
+  }else{
+    this.isOnGround = false
+  }
+
+
+
+  /**Handle inputs**/
   if (typeof(this.rotation) == "undefined"){
     this.rotation = 0;
   }
   if ((keyboard.isKeyDown(keyboard.KEY_SPACE) == true)){
-    if (!this.falling){
+    if (!this.falling && this.jumpCoolDown <= (Date.now() - this.landTime)){
       tempVelY -= this.jumpForce * this.drag * deltaTime;
       this.lastJump = Date.now(); //Reset jump time
       if (this.direction == LEFT){

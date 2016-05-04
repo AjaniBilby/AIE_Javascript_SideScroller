@@ -2,6 +2,7 @@ var GameStartTime = Date.now();
 var LoadedFiles = []; //Make LoadedFiles a global variable
 var tickEvents = []; //Define list of functions to be called on tick
 var c_filesLoading = 0;
+var debug = false;
 
 var state = {
   current: 1,

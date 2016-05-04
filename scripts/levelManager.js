@@ -39,6 +39,10 @@ LoadLevel('level1');
 
 function DrawMap(){
 
+  if (debug == true){
+    DrawLevelCollisionData(1)
+  };
+
   //Draw tiles
   for (var layerIdx=0; layerIdx<LAYER_COUNT; layerIdx++){
     var idx = 0;
@@ -66,10 +70,10 @@ function InitalizeMap(){
       for (var x=0; x<levelData.layers[layerIdx].width; x++){
         if (levelData.layers[layerIdx].data[idx] != 0){
           //for each tile we find in layer data, we need to create 4 collisions (because our collision squares are 35x35 but the tile in the level are 70x70)
-          cells[layerIdx][y][x] = 1;
           cells[layerIdx][y-1][x] = 1;
-          cells[layerIdx][y-1][x+1] = 1;
-          cells[layerIdx][y][x+1] = 1;
+          //cells[layerIdx][y-1][x] = 1;
+          //cells[layerIdx][y-1][x+1] = 1;
+          //cells[layerIdx][y][x+1] = 1;
         }else if (cells[layerIdx][y][x] != 1){
           cells[layerIdx][y][x] = 0;
         }
@@ -107,5 +111,18 @@ function tileToPixel(tile){
 function pixelToTile(pixel){
   return Math.floor(pixel/TILE);
 };
+
+
+
+function DrawLevelCollisionData(tileLayer) {
+    for (var y = 0; y < levelData.layers[tileLayer].height; y++) {
+        for (var x = 0; x < levelData.layers[tileLayer].width; x++) {
+            if (cells[tileLayer][y][x] == 1) {
+                context.fillStyle = "#F00";
+                context.fillRect(TILE * x, TILE * y, TILE, TILE);
+            }
+        }
+    }
+}
 
 tickEvents.push('DrawMap');
