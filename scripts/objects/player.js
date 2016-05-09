@@ -42,6 +42,8 @@ class_Player = function(){
   this.maxHealth = 100;
   this.ammo = 999;
   this.maxAmmo = 999;
+  this.fireTimeOutMax = 500;
+  this.fireTime = Date.now();
 };
 
 var player = new class_Player();
@@ -70,6 +72,14 @@ class_Player.prototype.update = function(deltaTime){
   if (typeof(this.rotation) == "undefined"){
     this.rotation = 0;
   }
+
+  if (keyboard.isKeyDown(keyboard.KEY_Z) == true){
+    if ((Date.now() - this.fireTime) >= this.fireTimeOutMax){
+      this.fireTime = Date.now();
+      fireSound.play();
+    }
+  }
+
   if ((keyboard.isKeyDown(keyboard.KEY_SPACE) == true)){
     if (!this.falling && this.jumpCoolDown <= (Date.now() - this.landTime)){
       tempVelY -= this.jumpForce * this.drag * deltaTime;
@@ -187,8 +197,10 @@ class_Player.prototype.update = function(deltaTime){
 };
 
 class_Player.prototype.draw = function(deltaTime){
+  camera.location.x = this.location.x;
+  camera.location.y = this.location.y;
   HUD_Update_Layer0();
-  this.sprite.draw(context, this.location.x, this.location.y);
+  this.sprite.draw(context, SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
   HUD_Update_Layer1();
 };
 

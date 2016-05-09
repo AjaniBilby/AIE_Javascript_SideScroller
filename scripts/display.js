@@ -5,6 +5,11 @@ require("./scripts/display.js");
 
 console.debug("Running Main Script...");
 
+//Camera
+var camera = {
+  location: new Vector2(0, 0)
+}
+
 /**Tick**/
 function run() {
     //Handel Delta

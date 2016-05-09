@@ -5,7 +5,7 @@ function HUD_Update_Layer0(){
   }else{
     offset = -20;
   }
-  HUDlocation = new Vector2(player.location.x+offset, player.location.y);
+  HUDlocation = new Vector2(SCREEN_WIDTH/2 + offset, SCREEN_HEIGHT/2);
   TankDimentions = new Vector2(40, 70);
 
   //Get percent of ammo avaliable
