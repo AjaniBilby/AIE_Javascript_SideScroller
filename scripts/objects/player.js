@@ -40,9 +40,9 @@ class_Player = function(){
   //Attributes
   this.health = 100;
   this.maxHealth = 100;
-  this.ammo = 999;
-  this.maxAmmo = 999;
-  this.fireTimeOutMax = 500;
+  this.maxAmmo = 250;
+  this.ammo = this.maxAmmo;
+  this.fireTimeOutMax = 100;
   this.fireTime = Date.now();
 };
 
@@ -74,9 +74,10 @@ class_Player.prototype.update = function(deltaTime){
   }
 
   if (keyboard.isKeyDown(keyboard.KEY_Z) == true){
-    if ((Date.now() - this.fireTime) >= this.fireTimeOutMax){
+    if (((Date.now() - this.fireTime) >= this.fireTimeOutMax) && this.ammo > 0){
       this.fireTime = Date.now();
       fireSound.play();
+      this.ammo -= 1;
     }
   }
 

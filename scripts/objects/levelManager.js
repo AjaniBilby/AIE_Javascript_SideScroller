@@ -33,8 +33,8 @@ function GenerateLevel(){
   LAYER_COUNT = parseInt(levelData.layers.length);
   TILESET_PADDING = parseInt(levelData.tilesets[0].spacing);
   TILESET_SPACING = parseInt(levelData.tilesets[0].margin);
-  MAP.tw = parseInt(levelData.layers[0].height);
-  MAP.th = parseInt(levelData.layers[0].width);
+  MAP.tw = parseInt(levelData.layers[0].width);
+  MAP.th = parseInt(levelData.layers[0].height);
   TILE = parseInt(levelData.tileheight);
 
   //Get layers
@@ -62,12 +62,16 @@ function DrawMap(){
     var idx = 0;
     for (var y=0; y<levelData.layers[layerIdx].height; y++){
       for (var x=0; x<levelData.layers[layerIdx].width; x++){
-        if (levelData.layers[layerIdx].data[idx] != 0){
-          //the tiles in the Tiled map are base 1 (meaning a value of 0 means no tile), so subtract one from the tile id to get the correct tile
-          var tileIndex = levelData.layers[layerIdx].data[idx] - 1;
-          var sx = TILESET_PADDING + (tileIndex % TILESET_COUNT_X) * (TILESET_TILE + TILESET_SPACING);
-          var sy = TILESET_PADDING + (Math.floor(tileIndex / TILESET_COUNT_Y)) * (TILESET_TILE + TILESET_SPACING);
-          context.drawImage(tileset, sx, sy, TILESET_TILE, TILESET_TILE, (x*TILE - offset.x), ((y-1)*TILE - offset.y), TILESET_TILE, TILESET_TILE);
+        if (x+TILE/2 > SCREEN_WIDTH || x+TILE/2 < 0 || y+TILE/2 > SCREEN_HEIGHT || y+TILE/2 < 0){
+          //if tile is off screen
+        }else{
+          if (levelData.layers[layerIdx].data[idx] != 0){
+            //the tiles in the Tiled map are base 1 (meaning a value of 0 means no tile), so subtract one from the tile id to get the correct tile
+            var tileIndex = levelData.layers[layerIdx].data[idx] - 1;
+            var sx = TILESET_PADDING + (tileIndex % TILESET_COUNT_X) * (TILESET_TILE + TILESET_SPACING);
+            var sy = TILESET_PADDING + (Math.floor(tileIndex / TILESET_COUNT_Y)) * (TILESET_TILE + TILESET_SPACING);
+            context.drawImage(tileset, sx, sy, TILESET_TILE, TILESET_TILE, (x*TILE - offset.x), ((y-1)*TILE - offset.y), TILESET_TILE, TILESET_TILE);
+          }
         }
         idx ++;
       }
@@ -98,7 +102,7 @@ function InitalizeMap(){
 };
 
 function cellAtPixelCoord(layer, x, y){
-  if (x<0 || x>SCREEN_WIDTH || y<0){
+  if (x<0 || y<0){
     //Let the player drop of the bottom of the screen (this means death)
     return;
   }else if (y>SCREEN_HEIGHT){
@@ -109,7 +113,7 @@ function cellAtPixelCoord(layer, x, y){
 }
 
 function cellAtTileCoord(layer, tx, ty){
-  if (tx<0 || tx>=MAP.tw || ty<0){
+  if (tx<0 || tx>=(MAP.tw*TILE) || ty<0){
     return 1;
   }else if (ty>=MAP.th){
     return 0;
