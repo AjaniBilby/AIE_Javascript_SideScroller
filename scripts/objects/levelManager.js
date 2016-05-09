@@ -25,7 +25,7 @@ function LoadLevel(level){
 };
 
 //Load defult level
-LoadLevel('level1');
+LoadLevel('level2');
 
 function GenerateLevel(){
   //Set level size parameters
