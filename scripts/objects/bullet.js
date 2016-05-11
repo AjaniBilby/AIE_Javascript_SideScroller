@@ -1,7 +1,11 @@
 var bullets = []
 
 class_Bullet = function(x, y, dir){
-  this.sprite = document.createElement("img");
+  this.sprite = new Sprite("./sprites/bullet.png");
+this.sprite.buildAnimation(1, 1, 32, 32, -1, [0]);
+this.sprite.setAnimationOffset(0, 0, 0);
+this.sprite.setLoop(0, false);
+
 
   this.location = new Vector2(x,y);
 
@@ -14,10 +18,7 @@ class_Bullet.prototype.update = function(dt){
 }
 
 class_Bullet.prototype.draw = function(){
-  context.save();
-  context.translate(this.location.x, this.location.y);
-  context.drawImage(this.sprite, -this.sprite.width/2, -this.sprite.height/2);
-  context.restore();
+  this.sprite.draw(context, this.x - camera.location.x, this.y - camera.location.y)
 }
 
 function BulletTick(dt){

@@ -159,16 +159,33 @@ class_Player.prototype.update = function(deltaTime){
   var ty = pixelToTile(this.location.y);
   var nx = (this.location.x)%TILE; // true if player overlaps right
   var ny = (this.location.y)%TILE; // true if player overlaps below
-  var cell = cellAtTileCoord(LAYER_LIST.Platform, tx, ty);
-  var cellright = cellAtTileCoord(LAYER_LIST.Platform, tx + 1, ty);
-  var celldown = cellAtTileCoord(LAYER_LIST.Platform, tx, ty + 1);
-  var celldiag = cellAtTileCoord(LAYER_LIST.Platform, tx + 1, ty + 1);
+  var cells = {
+    ladder: {
+      center: cellAtTileCoord(LAYER_LIST.Ladders, tx, ty),
+      right: cellAtTileCoord(LAYER_LIST.Ladders, tx + 1, ty),
+      down: cellAtTileCoord(LAYER_LIST.Ladders, tx, ty+1),
+      diag: cellAtTileCoord(LAYER_LIST.Ladders, tx + 1, ty + 1)
+    },
+    platform: {
+      cell: cellAtTileCoord(LAYER_LIST.Platform, tx, ty),
+      cellright: cellAtTileCoord(LAYER_LIST.Platform, tx + 1, ty),
+      celldown: cellAtTileCoord(LAYER_LIST.Platform, tx, ty+1),
+      celldiag: cellAtTileCoord(LAYER_LIST.Platform, tx + 1, ty + 1)
+    }
+  }
+
 
   this.falling = true;
 
+  if (cells.ladder.center || (cells.ladder.center && cells.ladder.down)){
+    this.velocity.y -= 500;
+    console.log("is on ladder")
+    return;
+  }
+
   //Vertical Collision
   if (this.velocity.y > 0){
-    if ((celldown && !cell) || (celldiag && !cellright && nx)){
+    if ((cells.platform.celldown && !cells.platform.cell) || (cells.platform.celldiag && !cells.platform.cellright && nx)){
       //clamp the y position to avoid falling into platform below
       this.location.y = tileToPixel(ty);
       this.velocity.y = 0;
@@ -177,23 +194,23 @@ class_Player.prototype.update = function(deltaTime){
       ny = 0;
     }
   }else if (this.velocity.y < 0){
-    if ((cell && !celldown) || (cellright && !celldiag && nx)){
+    if ((cells.platform.cell && !cells.platform.celldown) || (cells.platform.cellright && !cells.platform.celldiag && nx)){
       //clamp the y position to avoid jumping into the platform above
       this.location.y = tileToPixel(ty + 1);
       this.velocity.y = 0;
-      cell = celldown;
-      cellright = celldiag;
+      cells.platform.cell = cells.platform.celldown;
+      cells.platform.cellright = cells.platform.celldiag;
       ny = 0;
       }
     }
-    //Horizontal Collision
+  //Horizontal Collision
     if (this.velocity.x > 0){
-      if ((cellright && !cell) || (celldiag && !celldown && ny)){
+      if ((cells.platform.cellright && !cells.platform.cell) || (cells.platform.celldiag && !cells.platform.celldown && ny)){
         this.location.x = tileToPixel(tx);
         this.velocity.x = 0;
       }
     }else if (this.velocity.x < 0){
-      if ((cell && !cellright) || (celldown && !celldiag && ny)){
+      if ((cells.platform.cell && !cells.platform.cellright) || (cells.platform.celldown && !cells.platform.celldiag && ny)){
         this.location.x = tileToPixel(tx + 1);
         this.velocity.x = 0;
       }
