@@ -80,6 +80,7 @@ class_Player.prototype.update = function(deltaTime){
       this.fireTime = Date.now();
       fireSound.play();
       this.ammo -= 1;
+      bullets.push(new class_Bullet(this.location.x, this.location.y, 1));
     }
   }
 
