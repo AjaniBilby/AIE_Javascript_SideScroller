@@ -46,6 +46,8 @@ class_Player = function(){
   this.ammo = this.maxAmmo;
   this.fireTimeOutMax = 100;
   this.fireTime = Date.now();
+  //States
+  this.onLadder = false;
 };
 
 var player = new class_Player();
@@ -74,8 +76,8 @@ class_Player.prototype.update = function(deltaTime){
   if (typeof(this.rotation) == "undefined"){
     this.rotation = 0;
   }
-
-  if (keyboard.isKeyDown(keyboard.KEY_Z) == true){
+  //Fire
+  if (keyboard.isKeyDown(keyboard.KEY_SPACE) == true){
     if (((Date.now() - this.fireTime) >= this.fireTimeOutMax) && this.ammo > 0){
       this.fireTime = Date.now();
       fireSound.play();
@@ -83,8 +85,8 @@ class_Player.prototype.update = function(deltaTime){
       bullets.push(new class_Bullet(this.location.x, this.location.y, 1));
     }
   }
-
-  if ((keyboard.isKeyDown(keyboard.KEY_SPACE) == true)){
+  //Jump
+  if ((keyboard.isKeyDown(keyboard.KEY_W) == true) && !this.onLadder){
     if (!this.falling && this.jumpCoolDown <= (Date.now() - this.landTime)){
       tempVelY -= this.jumpForce * this.drag * deltaTime;
       this.lastJump = Date.now(); //Reset jump time
@@ -101,8 +103,7 @@ class_Player.prototype.update = function(deltaTime){
       tempVelY -= (this.jumpForce * this.drag * deltaTime) /5;
     }
   }
-
-
+  //Horizontal Movement
   if (keyboard.isKeyDown(keyboard.KEY_D) == true){
     tempVelX += (this.acceleration * this.drag);
     this.direction = RIGHT;
@@ -128,10 +129,19 @@ class_Player.prototype.update = function(deltaTime){
       }
     }
   }
+  //Ladder Movement
+  if (this.onLadder && (keyboard.isKeyDown(keyboard.KEY_W) == true)){
+    this.velocity -= 1;
+  }else if (this.onLadder && (keyboard.isKeyDown(keyboard.KEY_S) == true)){
+    this.velocity += 1;
+  }
+
 
   //Handle Physics
   /*Gravity*/
-  this.velocity.y += (GRAVITY);
+  if (!this.onLadder){
+    this.velocity.y += (GRAVITY);
+  }
   /*Apply New Forces*/
   this.velocity.x += tempVelX;
   this.velocity.y += tempVelY;
@@ -167,25 +177,27 @@ class_Player.prototype.update = function(deltaTime){
       diag: cellAtTileCoord(LAYER_LIST.Ladders, tx + 1, ty + 1)
     },
     platform: {
-      cell: cellAtTileCoord(LAYER_LIST.Platform, tx, ty),
-      cellright: cellAtTileCoord(LAYER_LIST.Platform, tx + 1, ty),
-      celldown: cellAtTileCoord(LAYER_LIST.Platform, tx, ty+1),
-      celldiag: cellAtTileCoord(LAYER_LIST.Platform, tx + 1, ty + 1)
+      center: cellAtTileCoord(LAYER_LIST.Platform, tx, ty),
+      right: cellAtTileCoord(LAYER_LIST.Platform, tx + 1, ty),
+      down: cellAtTileCoord(LAYER_LIST.Platform, tx, ty+1),
+      diag: cellAtTileCoord(LAYER_LIST.Platform, tx + 1, ty + 1)
     }
   }
 
 
   this.falling = true;
 
-  if (cells.ladder.center || (cells.ladder.center && cells.ladder.down)){
-    this.velocity.y -= 500;
-    console.log("is on ladder")
+  if (cells.ladder.center || cells.ladder.down){
+    this.onLadder = true;
+    this.falling = false;
     return;
+  }else{
+    this.onLadder = false;
   }
 
   //Vertical Collision
   if (this.velocity.y > 0){
-    if ((cells.platform.celldown && !cells.platform.cell) || (cells.platform.celldiag && !cells.platform.cellright && nx)){
+    if ((cells.platform.down && !cells.platform.center) || (cells.platform.diag && !cells.platform.right && nx)){
       //clamp the y position to avoid falling into platform below
       this.location.y = tileToPixel(ty);
       this.velocity.y = 0;
@@ -194,23 +206,24 @@ class_Player.prototype.update = function(deltaTime){
       ny = 0;
     }
   }else if (this.velocity.y < 0){
-    if ((cells.platform.cell && !cells.platform.celldown) || (cells.platform.cellright && !cells.platform.celldiag && nx)){
+    if ((cells.platform.center && !cells.platform.celldown) || (cells.platform.right && !cells.platform.diag && nx)){
       //clamp the y position to avoid jumping into the platform above
       this.location.y = tileToPixel(ty + 1);
       this.velocity.y = 0;
-      cells.platform.cell = cells.platform.celldown;
-      cells.platform.cellright = cells.platform.celldiag;
+      cells.platform.center = cells.platform.celldown;
+      cells.platform.right = cells.platform.celldiag;
       ny = 0;
       }
     }
+
   //Horizontal Collision
     if (this.velocity.x > 0){
-      if ((cells.platform.cellright && !cells.platform.cell) || (cells.platform.celldiag && !cells.platform.celldown && ny)){
+      if ((cells.platform.right && !cells.platform.center) || (cells.platform.diag && !cells.platform.down && ny)){
         this.location.x = tileToPixel(tx);
         this.velocity.x = 0;
       }
     }else if (this.velocity.x < 0){
-      if ((cells.platform.cell && !cells.platform.cellright) || (cells.platform.celldown && !cells.platform.celldiag && ny)){
+      if ((cells.platform.center && !cells.platform.cellright) || (cells.platform.down && !cells.platform.diag && ny)){
         this.location.x = tileToPixel(tx + 1);
         this.velocity.x = 0;
       }
