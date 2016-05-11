@@ -83,7 +83,14 @@ class_Player.prototype.update = function(deltaTime){
       this.fireTime = Date.now();
       fireSound.play();
       this.ammo -= 1;
-      bullets.push(new class_Bullet(this.location.x, this.location.y, 1));
+      if (this.direction == LEFT){
+        var bulletDir = -1
+        var gunOffset = -30
+      }else{
+        var bulletDir = 1
+        var gunOffset = 80
+      }
+      bullets.push(new class_Bullet(this.location.x+SCREEN_WIDTH/2+gunOffset, this.location.y+SCREEN_HEIGHT/2+50, bulletDir));
     }
   }
   //Jump

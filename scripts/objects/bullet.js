@@ -9,16 +9,16 @@ this.sprite.setLoop(0, false);
 
   this.location = new Vector2(x,y);
 
-  this.speed = METER * 1;
+  this.speed = METER * 10;
   this.direction = dir;
 }
 
 class_Bullet.prototype.update = function(dt){
-  this.location += this.speed * this.direction;
+  this.location.x += this.speed * this.direction * dt;
 }
 
 class_Bullet.prototype.draw = function(){
-  this.sprite.draw(context, this.x - camera.location.x, this.y - camera.location.y)
+  this.sprite.draw(context, this.location.x-camera.location.x, this.location.y-camera.location.y)
 }
 
 function BulletTick(dt){
