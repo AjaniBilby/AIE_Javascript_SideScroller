@@ -6,6 +6,7 @@ tileset.src = "./sprites/tileset.png";
 //Set Level defualts
 var LAYER_LIST = {};
 var LAYER_COUNT = 3;
+var LAYER_OBJECT_BAT = 0;
 var MAP = {tw:31, th:15};
 var TILE = 70;
 var TILESET_TILE = TILE * 1;
@@ -89,9 +90,6 @@ function InitalizeMap(){
         if (levelData.layers[layerIdx].data[idx] != 0){
           //for each tile we find in layer data, we need to create 4 collisions (because our collision squares are 35x35 but the tile in the level are 70x70)
           cells[layerIdx][y-1][x] = 1;
-          //cells[layerIdx][y-1][x] = 1;
-          //cells[layerIdx][y-1][x+1] = 1;
-          //cells[layerIdx][y][x+1] = 1;
         }else if (cells[layerIdx][y][x] != 1){
           cells[layerIdx][y][x] = 0;
         }

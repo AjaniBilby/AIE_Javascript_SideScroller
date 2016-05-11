@@ -1,3 +1,5 @@
+require("./scripts/objects/bullet.js")
+
 var LEFT = 0;
 var RIGHT = 1;
 var ANIM_IDLE_RIGHT = 0;
