@@ -7,23 +7,24 @@ var fireSound = new Howl({
 
 var backgroundMusic = {
   state: "start-up",
-  sound: new Howl({urls: ["./sounds/Music/Intro.ogg"], loop: false, buffer: true, volume: 0.75, onend: function(){songSectFin()}})
+  start: new Howl({urls: ["./sounds/Music/Intro.ogg"], loop: false, buffer: true, volume: 0.75, onend: function(){songSectFin()}}),
+  main: new Howl({urls: ["./sounds/Music/Main.ogg"], loop: false, buffer: true, volume: 0.75, onend: function(){songSectFin()}}),
+  end: new Howl({urls: ["./sounds/Music/End.ogg"], loop: false, buffer: true, volume: 0.75, onend: function(){songSectFin()}})
 }
 
 function songSectFin(){
+  console.log(backgroundMusic.state)
+  //Play sond by state
   switch (backgroundMusic.state){
     case "start-up":
-      backgroundMusic.sound.urls = ["./sounds/Music/Intro.ogg"];
-      backgroundMusic.sound.play();
+      backgroundMusic.start.play();
       break;
-    case "Main":
+    case "main":
       console.log("playing Main")
-      backgroundMusic.sound.urls = ["./sounds/Music/Main.ogg"];
-      backgroundMusic.sound.play();
+      backgroundMusic.main.play();
       break;
-    case "End":
-      backgroundMusic.sound.urls = ["./sounds/Music/End.ogg"];
-      backgroundMusic.sound.play();
+    case "end":
+      backgroundMusic.end.play();
       break;
     defualt:
       console.log("Errors")
@@ -31,4 +32,4 @@ function songSectFin(){
   console.log("YUS!")
 };
 
-backgroundMusic.sound.play();
+backgroundMusic.start.play();

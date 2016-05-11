@@ -48,6 +48,7 @@ class_Player = function(){
   this.fireTime = Date.now();
   //States
   this.onLadder = false;
+  this.LadderDown = false;
 };
 
 var player = new class_Player();
@@ -131,9 +132,9 @@ class_Player.prototype.update = function(deltaTime){
   }
   //Ladder Movement
   if (this.onLadder && (keyboard.isKeyDown(keyboard.KEY_W) == true)){
-    this.velocity -= 1;
-  }else if (this.onLadder && (keyboard.isKeyDown(keyboard.KEY_S) == true)){
-    this.velocity += 1;
+    this.velocity.y -= METER * 4;
+  }else if (this.onLadder && this.LadderDown && (keyboard.isKeyDown(keyboard.KEY_S) == true)){
+    this.velocity.y += METER * 4;
   }
 
 
@@ -190,6 +191,7 @@ class_Player.prototype.update = function(deltaTime){
   if (cells.ladder.center || cells.ladder.down){
     this.onLadder = true;
     this.falling = false;
+    this.LadderDown = cells.ladder.down;
     return;
   }else{
     this.onLadder = false;
