@@ -205,7 +205,7 @@ class_Player.prototype.update = function(deltaTime){
   }
 
   //Vertical Collision
-  if ( player.location.x > 0 || player.location.x < (levelData.tilesets.tilecount*TILE) ){
+  if ( player.location.x >= 0 || player.location.x < (levelData.tilesets.tilecount*TILE) ){
     //In world, then test collision
     if (this.velocity.y > 0){
       if ((cells.platform.down && !cells.platform.center) || (cells.platform.diag && !cells.platform.right && nx)){
