@@ -3,6 +3,7 @@ var Keyboard = function(){
 
   this.keyListeners = new Array();
   this.keys = new Array();
+  this.keysDown = 0;
 
   //https://developer.mozilla.org/en-US/docs/DOM/KeyboardEvent
   this.KEY_BACKSPACE = 8;
@@ -107,9 +108,13 @@ var Keyboard = function(){
 
 //Keyboard Functions
 Keyboard.prototype.onKeyDown = function(evt){
+  if (this.keys[evt.keyCode] == false){
+    this.keysDown -= 1;
+  }
   this.keys[evt.keyCode] = true;
 };
 Keyboard.prototype.onKeyUp = function(evt){
+  this.keysDown += 1;
   this.keys[evt.keyCode] = false;
 };
 Keyboard.prototype.isKeyDown = function(keyCode){
