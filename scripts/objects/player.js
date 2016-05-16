@@ -195,7 +195,7 @@ class_Player.prototype.update = function(deltaTime){
 
   this.falling = true;
 
-  if (cells.ladder.center || cells.ladder.down){
+  if ((cells.ladder.center || cells.ladder.down) && (player.location.x > 0 || player.location.x < (levelData.tilesets.tilecount*TILE)) == true){
     this.onLadder = true;
     this.falling = false;
     this.LadderDown = cells.ladder.down;
@@ -205,38 +205,43 @@ class_Player.prototype.update = function(deltaTime){
   }
 
   //Vertical Collision
-  if (this.velocity.y > 0){
-    if ((cells.platform.down && !cells.platform.center) || (cells.platform.diag && !cells.platform.right && nx)){
-      //clamp the y position to avoid falling into platform below
-      this.location.y = tileToPixel(ty);
-      this.velocity.y = 0;
-      this.falling = false;
-      this.jumping = false;
-      ny = 0;
-    }
-  }else if (this.velocity.y < 0){
-    if ((cells.platform.center && !cells.platform.celldown) || (cells.platform.right && !cells.platform.diag && nx)){
-      //clamp the y position to avoid jumping into the platform above
-      this.location.y = tileToPixel(ty + 1);
-      this.velocity.y = 0;
-      cells.platform.center = cells.platform.celldown;
-      cells.platform.right = cells.platform.celldiag;
-      ny = 0;
+  if ( player.location.x > 0 || player.location.x < (levelData.tilesets.tilecount*TILE) ){
+    //In world, then test collision
+    if (this.velocity.y > 0){
+      if ((cells.platform.down && !cells.platform.center) || (cells.platform.diag && !cells.platform.right && nx)){
+        //clamp the y position to avoid falling into platform below
+        this.location.y = tileToPixel(ty);
+        this.velocity.y = 0;
+        this.falling = false;
+        this.jumping = false;
+        ny = 0;
       }
-    }
+    }else if (this.velocity.y < 0){
+      if ((cells.platform.center && !cells.platform.celldown) || (cells.platform.right && !cells.platform.diag && nx)){
+        //clamp the y position to avoid jumping into the platform above
+        this.location.y = tileToPixel(ty + 1);
+        this.velocity.y = 0;
+        cells.platform.center = cells.platform.celldown;
+        cells.platform.right = cells.platform.celldiag;
+        ny = 0;
+        }
+      }
 
-  //Horizontal Collision
-    if (this.velocity.x > 0){
-      if ((cells.platform.right && !cells.platform.center) || (cells.platform.diag && !cells.platform.down && ny)){
-        this.location.x = tileToPixel(tx);
-        this.velocity.x = 0;
+    //Horizontal Collision
+      if (this.velocity.x > 0){
+        if ((cells.platform.right && !cells.platform.center) || (cells.platform.diag && !cells.platform.down && ny)){
+          this.location.x = tileToPixel(tx);
+          this.velocity.x = 0;
+        }
+      }else if (this.velocity.x < 0){
+        if ((cells.platform.center && !cells.platform.cellright) || (cells.platform.down && !cells.platform.diag && ny)){
+          this.location.x = tileToPixel(tx + 1);
+          this.velocity.x = 0;
+        }
       }
-    }else if (this.velocity.x < 0){
-      if ((cells.platform.center && !cells.platform.cellright) || (cells.platform.down && !cells.platform.diag && ny)){
-        this.location.x = tileToPixel(tx + 1);
-        this.velocity.x = 0;
-      }
-    }
+  }else{
+    console.log("OUT OF WORLD")
+  }
 };
 
 class_Player.prototype.draw = function(deltaTime){
@@ -248,8 +253,10 @@ class_Player.prototype.draw = function(deltaTime){
 };
 
 function PlayerTick(dt){
-  player.update(dt);
-  player.draw(dt);
+  if (typeof(player)!=undefined){
+    player.update(dt);
+    player.draw(dt);
+  }
 };
 
 tickEvents.push('PlayerTick');

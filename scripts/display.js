@@ -105,23 +105,8 @@ function DeathRun(){
   //Draw Death Message
   context.fillStyle = "rgb(209, 209, 209)"
   context.font = "38px Arial";
-  var txt = 'You Lost Your Machine'
+  var txt = 'You dun broke'
   context.fillText(txt, (SCREEN_WIDTH / 2 - context.measureText(txt).width / 2), (SCREEN_HEIGHT /2 - 150));
-
-  if ((score * Timer) >= highscore){
-    //Draw Highscore
-    context.fillStyle = "rgb(247, 245, 40)"
-    context.font = "28px Arial";
-    var txt = 'New Highscore'
-    context.fillText(txt, (SCREEN_WIDTH / 2 - context.measureText(txt).width / 2), (SCREEN_HEIGHT /2 - 100));
-    highscore = (score * Timer);
-    setCookie('highscore', highscore, 354);
-  }
-  //Draw Score
-  context.fillStyle = "rgb(209, 209, 209)"
-  context.font = "24px Arial";
-  var txt = 'Final Score: ' + (score * Timer);
-  context.fillText(txt, (SCREEN_WIDTH / 2 - context.measureText(txt).width / 2), (SCREEN_HEIGHT /2 + 75));
 
   //Draw Restart
   context.fillStyle = "rgb(255, 255, 255)"
@@ -130,11 +115,16 @@ function DeathRun(){
   context.fillText(txt, (SCREEN_WIDTH / 2 - context.measureText(txt).width / 2), (SCREEN_HEIGHT /2 + 110));
 
   //If R is pressed reset
-  if (KeysDown[82] == true){
-    state = 'Game'
+  if ((keyboard.isKeyDown(keyboard.KEY_R) == true) || (keyboard.isKeyDown(keyboard.KEY_SPACE) == true)){
+    state.current = state.game
     reset();
   }
 };
+
+function reset(){
+  player = new class_Player();
+  GenerateLevel();
+}
 
 /**On Window Resize**/
 function EventResize() {
