@@ -32,8 +32,18 @@ function run() {
       return;
     };
 
-   if (state.current == state.game){
-     GameRun();
+   switch (state.current){
+    case state.start:
+      break;
+    case state.game:
+      GameRun();
+      break;
+    case state.win:
+      break;
+    case state.death:
+      break;
+    default:
+      console.log("CANNOT FIND STATE")
    };
 };
 

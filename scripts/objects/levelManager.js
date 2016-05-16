@@ -2,6 +2,7 @@
 var cells = [];
 var tileset = document.createElement("img");
 tileset.src = "./sprites/tileset.png";
+var drawLevel = false;
 
 //Set Level defualts
 var LAYER_LIST = {};
@@ -21,6 +22,7 @@ var GRAVITY = METER * 6; // very exaggerated gravity (6x)
 
 
 function LoadLevel(level){
+  drawLevel = false;
   var dir = "./levels/" + level + ".js";
   LoadJS(dir);
 };
@@ -29,6 +31,11 @@ function LoadLevel(level){
 LoadLevel('level2');
 
 function GenerateLevel(){
+  console.log("Generating Level")
+  if (typeof(levelData) == undefined){
+    setTimeout(function() { GenerateLevel(); }, 11);
+    return;
+  }
   //Set level size parameters
   LAYER_LIST = {};
   LAYER_COUNT = parseInt(levelData.layers.length);
@@ -43,11 +50,16 @@ function GenerateLevel(){
     LAYER_LIST[levelData.layers[i].name] = i;
     console.log(levelData.layers[i].name + '=' + LAYER_LIST[levelData.layers[i].name]); //Check is set it
   }
-
   InitalizeMap();
+  drawLevel = true;
+  player.location.x = levelData.spawn.x;
+  player.location.y = levelData.spawn.y;
 };
 
 function DrawMap(){
+  if (typeof(levelData) == undefined || drawLevel == false){
+    return;
+  }
 
   if (debug == true){
     DrawLevelCollisionData(1)
@@ -56,6 +68,17 @@ function DrawMap(){
   offset = {
     x: camera.location.x - SCREEN_WIDTH/2,
     y: camera.location.y - SCREEN_HEIGHT/2
+  }
+
+  //See if the player is in the end zone
+  if (player.location.x > levelData.endZone[0].x && player.location.x < levelData.endZone[1].x){
+    if (player.location.y > levelData.endZone[0].y && player.location.y < levelData.endZone[1].y){
+      state.current = state.win;
+    }
+  }
+  //See if player has fallen of the map
+  if (player.location.y > (levelData.layers[0].height*TILE)){
+    state.current = state.death;
   }
 
   //Draw tiles

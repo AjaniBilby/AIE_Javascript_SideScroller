@@ -6,6 +6,13 @@
 
 	<script>
 		var highscore = 0;
+		var state = {
+			current: 0,
+			start: 0,
+			game: 1,
+			death: 2,
+			win: 3
+		}
 	</script>
 
 </head>
@@ -21,6 +28,7 @@
 	var context = canvas.getContext("2d");
 	</script>
 	<script src="./scripts/index.js" async></script>
+	<script src="./scripts/howler.js" async></script>
 </body>
 
 </html>

@@ -4,11 +4,6 @@ var tickEvents = []; //Define list of functions to be called on tick
 var c_filesLoading = 0;
 var debug = false;
 
-var state = {
-  current: 1,
-  game: 1
-};
-
 /**Class Lib**/
   //Vector2 class
   var Vector2 = function (nX, nY){
@@ -153,6 +148,17 @@ var state = {
       return NewFile
     };
 /**End Function Library**/
+
+/*------------------------
+Get Scripts already Loaded
+-------------------------*/
+documentScripts = document.getElementsByTagName('script');
+for (var i=0; i<documentScripts.length; i++){
+  if (documentScripts[i].src == undefined){
+  LoadedFiles.push(documentScripts[i].src)
+  }
+}
+
 
 require("./scripts/sprite.js");
 require("./scripts/howler.js");

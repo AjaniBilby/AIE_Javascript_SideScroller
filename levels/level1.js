@@ -53,7 +53,8 @@ var levelData = {
         }],
  "tilewidth":70,
  "version":1,
- "width":32
+ "width":32,
+ "spawn": {"x": 0, "y": 0}
 }
 
 GenerateLevel();
