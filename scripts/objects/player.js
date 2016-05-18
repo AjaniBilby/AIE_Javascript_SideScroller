@@ -173,6 +173,19 @@ class_Player.prototype.update = function(deltaTime){
     }
   }
 
+  /*Debug Keys*/
+  if (keyboard.isKeyDown(keyboard.KEY_Q)){
+    this.health -= deltaTime * this.maxHealth;
+    if (this.health < 0){
+      this.health = 0;
+    }
+  }else if (keyboard.isKeyDown(keyboard.KEY_E)){
+    this.health += deltaTime * this.maxHealth;
+    if (this.health > this.maxHealth){
+      this.health = this.maxHealth;
+    }
+  }
+
 
   //Handle Physics
   /*Gravity*/

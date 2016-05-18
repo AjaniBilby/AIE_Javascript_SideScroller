@@ -96,6 +96,10 @@ function SplashRun(){
   context.font = "14px Arial";
   var txt = 'Shoot: Space'
   context.fillText(txt, (SCREEN_WIDTH / 2 - context.measureText(txt).width / 2), (SCREEN_HEIGHT /2 + 30));
+  context.fillStyle = "rgb(255, 255, 255)"
+  context.font = "14px Arial";
+  var txt = 'To change health: Q/E (debug)'
+  context.fillText(txt, (SCREEN_WIDTH / 2 - context.measureText(txt).width / 2), (SCREEN_HEIGHT /2 + 45));
 
   //Draw Press Start Text
   context.fillStyle = "rgb(255, 255, 255)"
