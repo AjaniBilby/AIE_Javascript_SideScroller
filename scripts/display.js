@@ -103,6 +103,12 @@ function SplashRun(){
   var txt = 'Press Any Key To Start'
   context.fillText(txt, (SCREEN_WIDTH / 2 - context.measureText(txt).width / 2), (SCREEN_HEIGHT /2 + 80));
 
+  //Draw music Text
+  context.fillStyle = "rgb(255, 255, 255)"
+  context.font = "14px Arial";
+  var txt = 'Music: Sim Gretina - Moist Mechas'
+  context.fillText(txt, (18), (SCREEN_HEIGHT - 18));
+
   if (keyboard.keysDown > 0){
     state.current = state.game;
     console.log("any key")

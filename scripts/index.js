@@ -5,6 +5,8 @@ var c_filesLoading = 0;
 var debug = false;
 
 /**Class Lib**/
+  var LEFT = 0;
+  var RIGHT = 1;
   //Vector2 class
   var Vector2 = function (nX, nY){
     this.x = nX;
