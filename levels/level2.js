@@ -57,8 +57,8 @@ var levelData = {
  "tilewidth":70,
  "version":1,
  "width":60,
- "spawn": {"x": 0, "y": 900},
- "endZone": [{"x": 3850, "y": 1000}, {"x": 4143, "y": 1150}]
+ "spawn": {"x": 0, "y": 800},
+ "endZone": [{"x": 3850, "y": 1100}, {"x": 4143, "y": 1150}]
 }
 
 GenerateLevel();

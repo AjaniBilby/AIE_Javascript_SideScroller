@@ -175,8 +175,8 @@ class_Player.prototype.update = function(deltaTime){
   // This means we can short-circuit and avoid building a general purpose
   // collision detection engine by simply looking at the 1 to 4 cells that
   // the player occupies:
-  var tx = pixelToTile(this.location.x);
-  var ty = pixelToTile(this.location.y);
+  var tx = pixelToTile(this.location.x + 27.5);
+  var ty = pixelToTile(this.location.y + 25);
   var nx = (this.location.x)%TILE; // true if player overlaps right
   var ny = (this.location.y)%TILE; // true if player overlaps below
   var cells = {
@@ -226,19 +226,6 @@ class_Player.prototype.update = function(deltaTime){
         cells.platform.center = cells.platform.celldown;
         cells.platform.right = cells.platform.celldiag;
         ny = 0;
-        }
-      }
-
-    //Horizontal Collision
-      if (this.velocity.x > 0){
-        if ((cells.platform.right && !cells.platform.center) || (cells.platform.diag && !cells.platform.down && ny)){
-          this.location.x = tileToPixel(tx);
-          this.velocity.x = 0;
-        }
-      }else if (this.velocity.x < 0){
-        if ((cells.platform.center && !cells.platform.cellright) || (cells.platform.down && !cells.platform.diag && ny)){
-          this.location.x = tileToPixel(tx + 1);
-          this.velocity.x = 0;
         }
       }
   }else{

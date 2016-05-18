@@ -17,10 +17,6 @@ function run() {
     dt = (now - lastTime) / 1000.0;
     lastTime = now;
 
-    //Fill Background
-    context.fillStyle = "rgba(0, 100, 255, 1)";
-    context.fillRect(0, 0, canvas.width, canvas.height);
-
     if (c_filesLoading > 0){
       //Draw Loading
       context.fillStyle = "rgb(209, 209, 209)"
@@ -37,9 +33,13 @@ function run() {
       SplashRun();
       break;
     case state.game:
+      //Fill Background
+      context.fillStyle = "rgba(0, 100, 255, 1)";
+      context.fillRect(0, 0, canvas.width, canvas.height);
       GameRun();
       break;
     case state.win:
+      WinState();
       break;
     case state.death:
       DeathRun();
@@ -133,6 +133,26 @@ function DeathRun(){
     reset();
   }
 };
+
+function WinState(){
+  //Draw Death Message
+  context.fillStyle = "rgb(209, 209, 209)"
+  context.font = "38px Arial";
+  var txt = 'You won'
+  context.fillText(txt, (SCREEN_WIDTH / 2 - context.measureText(txt).width / 2), (SCREEN_HEIGHT /2 - 150));
+
+  //Draw Restart
+  context.fillStyle = "rgb(255, 255, 255)"
+  context.font = "14px Arial";
+  var txt = 'Press Space to goto main menu'
+  context.fillText(txt, (SCREEN_WIDTH / 2 - context.measureText(txt).width / 2), (SCREEN_HEIGHT /2 + 110));
+
+  //If Space is pressed reset
+  if (keyboard.isKeyDown(keyboard.KEY_SPACE) == true){
+    state.current = state.start;
+    reset();
+  }
+}
 
 function reset(){
   player = new class_Player();

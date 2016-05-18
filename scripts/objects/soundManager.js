@@ -15,7 +15,6 @@ var backgroundMusic = {
 }
 
 function SongSectFin(){
-  console.log(backgroundMusic.state)
   //Stop other songs that might be playing
   switch (backgroundMusic.state){
     case "start":
