@@ -31,7 +31,7 @@ function SongSectFin(){
       backgroundMusic["start"].sound.stop();
       break;
     defualt:
-      console.error("Music Error: Cannot find state ("+backgroundMusic.state+")";
+      console.error("Music Error: Cannot find state ("+backgroundMusic.state+")");
   }
 };
 

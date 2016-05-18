@@ -45,7 +45,7 @@ function run() {
       DeathRun();
       break;
     default:
-      console.error("Game Error: Cannot find state ("+state.current+")";
+      console.error("Game Error: Cannot find state ("+state.current+")");
    };
 };
 
