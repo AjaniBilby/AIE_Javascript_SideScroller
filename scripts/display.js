@@ -45,18 +45,27 @@ function run() {
       DeathRun();
       break;
     default:
-      console.log("CANNOT FIND STATE")
+      console.error("Game Error: Cannot find state ("+state.current+")";
    };
 };
 
 function GameRun(){
+  //Play sound
+  if (backgroundMusic.state != "main"){
+    TransitionSong("main");
+  }
+
+  //Run game tickEvents
   for (i=0; i<tickEvents.length; i++){
     window[tickEvents[i]](dt);
   }
 };
 
 function SplashRun(){
-  //Rem Text Measure
+  //Play sound
+  if (backgroundMusic.state != "start"){
+    TransitionSong("start");
+  }
 
   //Draw Background
   context.fillStyle = "rgb(0, 0, 0)";
@@ -101,6 +110,10 @@ function SplashRun(){
 };
 
 function DeathRun(){
+  //Play sound
+  if (backgroundMusic.state != "end"){
+    TransitionSong("end");
+  }
 
   //Draw Death Message
   context.fillStyle = "rgb(209, 209, 209)"

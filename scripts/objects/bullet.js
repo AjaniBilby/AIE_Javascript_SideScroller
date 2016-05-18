@@ -1,3 +1,6 @@
+require("./scripts/display.js");
+require("./scripts/sprite.js");
+
 var bullets = []
 
 class_Bullet = function(x, y, dir){

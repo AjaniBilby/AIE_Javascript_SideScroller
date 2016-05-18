@@ -1,3 +1,6 @@
+require("./scripts/display.js");
+require("./scripts/objects/player.js");
+
 //Load the image to use for the level tileset
 var cells = [];
 var tileset = document.createElement("img");

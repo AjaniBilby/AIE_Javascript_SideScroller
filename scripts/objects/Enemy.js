@@ -1,3 +1,6 @@
+require("./scripts/display.js");
+require("./scripts/sprite.js");
+
 Enemy = function(x, y){
   this.sprite = new Sprite("./sprites/bat.png");
   this.sprite.builtAnimation(2, 1, 88, 94, 0.3, [0,1]);

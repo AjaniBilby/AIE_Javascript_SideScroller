@@ -1,3 +1,6 @@
+require("./scripts/display.js");
+require("./scripts/sprite.js");
+
 function HUD_Update_Layer0(){
   //Set dimentions
   if (player.direction == LEFT){

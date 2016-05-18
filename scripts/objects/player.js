@@ -1,4 +1,6 @@
-require("./scripts/objects/bullet.js")
+require("./scripts/display.js");
+require("./scripts/sprite.js");
+require("./scripts/objects/bullet.js");
 
 var LEFT = 0;
 var RIGHT = 1;

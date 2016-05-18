@@ -1,3 +1,5 @@
+require("./scripts/objects/levelManager.js");
+
 var levelData = {
  "height":20,
  "layers":[

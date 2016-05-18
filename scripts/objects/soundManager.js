@@ -1,35 +1,43 @@
+require("./scripts/howler.js");
+
 var fireSound = new Howl({
   urls: ["./sounds/fireEffect.ogg"],
   loop: false,
   buffer: true,
-  volume: 1
+  volume: 0.5
 });
 
 var backgroundMusic = {
-  state: "start-up",
-  start: new Howl({urls: ["./sounds/Music/Intro.ogg"], loop: false, buffer: true, volume: 0.75, onend: function(){songSectFin()}}),
-  main: new Howl({urls: ["./sounds/Music/Main.ogg"], loop: false, buffer: true, volume: 0.75, onend: function(){songSectFin()}}),
-  end: new Howl({urls: ["./sounds/Music/End.ogg"], loop: false, buffer: true, volume: 0.75, onend: function(){songSectFin()}})
+  state: "start",
+  start: {volume: 0.25, sound: new Howl({urls: ["./sounds/Music/Intro.ogg"], loop: true, buffer: true, volume: 0.25, onend: function(){SongSectFin()}})},
+  main: {volume: 1, sound: new Howl({urls: ["./sounds/Music/Main.ogg"], loop: true, buffer: true, volume: 1, onend: function(){SongSectFin()}})},
+  end: {volume: 1, sound: new Howl({urls: ["./sounds/Music/End.ogg"], loop: false, buffer: true, volume: 1, onend: function(){SongSectFin()}})}
 }
 
-function songSectFin(){
+function SongSectFin(){
   console.log(backgroundMusic.state)
-  //Play sond by state
+  //Stop other songs that might be playing
   switch (backgroundMusic.state){
-    case "start-up":
-      backgroundMusic.start.play();
+    case "start":
+      backgroundMusic["end"].sound.stop();
+      backgroundMusic["main"].sound.stop();
       break;
     case "main":
-      console.log("playing Main")
-      backgroundMusic.main.play();
+      backgroundMusic["end"].sound.stop();
+      backgroundMusic["start"].sound.stop();
       break;
     case "end":
-      backgroundMusic.end.play();
+      backgroundMusic["main"].sound.stop();
+      backgroundMusic["start"].sound.stop();
       break;
     defualt:
-      console.log("Errors")
+      console.error("Music Error: Cannot find state ("+backgroundMusic.state+")";
   }
-  console.log("YUS!")
 };
 
-backgroundMusic.start.play();
+function TransitionSong(aim){
+  backgroundMusic[backgroundMusic.state].sound.fade(backgroundMusic[backgroundMusic.state].volume, 0, 1000);
+  backgroundMusic[aim].sound.play().fade(0, backgroundMusic[aim].volume, 1000);
+  backgroundMusic.state = aim;
+}
+TransitionSong("start");
